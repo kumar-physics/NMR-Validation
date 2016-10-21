@@ -4,9 +4,10 @@ Created on Oct 20, 2016
 @author: kumaran
 '''
 
-import time
+import time,sys
 import requests
-
+sys.path.append('../PyNMRSTAR') #NMR-STAR and NEF-Parser added as a submodule and imported into this project. This is a separate git repository
+import bmrb
 from Bio.PDB import *
 from dns.rdatatype import NULL
 
@@ -15,6 +16,7 @@ class NMRRestraints(object):
     classdocs
     '''
     BMRB_API_URL="http://webapi.bmrb.wisc.edu/current/jsonrpc"
+    DATA_DIR="/kbaskaran/restraints/"
 
     def __init__(self):
         '''
@@ -41,6 +43,10 @@ class NMRRestraints(object):
     
     
     BMRB_API_URL="http://webapi.bmrb.wisc.edu/current/jsonrpc"
+
+    def read_star_file(self,fname):
+        infile=self.DATA_DIR+fname
+        self.starData=bmrb.Entry.from_file(infile)
     
     def get_restraint_info(self):
         
@@ -67,4 +73,5 @@ class NMRRestraints(object):
 
 if __name__=="__main__":
     p=NMRRestraints()
-    p.get_restraint_info()
+    p.read_star_file("merged_34043_5lw8.str")
+    #p.get_restraint_info()
